@@ -24,7 +24,7 @@ ALLOWED_VALUES = {
     ]
 }
 
-DEFAULT_BATCH_SIZE = 10
+DEFAULT_BATCH_SIZE = 20
 
 class Totality(object):
     def __init__(self, api_key=None):
@@ -116,6 +116,8 @@ class ObservationsCollection(object):
             self._maybe_push()
     
     def flush(self):
+        if len(self.observations) == 0:
+            return
         doc = self.to_doc()
         doc[self.collection_type] = [obs.to_item() for obs in self.observations]
         obs_resp = requests.post(
